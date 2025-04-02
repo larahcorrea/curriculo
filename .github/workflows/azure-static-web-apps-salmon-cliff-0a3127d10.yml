@@ -18,10 +18,9 @@ jobs:
        id-token: write
        contents: read
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
-          submodules: false
+          submodules: true
           lfs: false
 
       - name: Build And Deploy
@@ -30,9 +29,9 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: "upload"
-          app_location: "/"  # Como seu index.html está na raiz
-          api_location: ""  # Sem APIs, deixe vazio
-          output_location: ""  # Sem build, deixe vazio
+          app_location: "/" # Mantém o código na raiz do repositório
+          output_location: "/" # Diz ao Azure que os arquivos já estão prontos
+          skip_app_build: true # Pula o processo de build, pois não é necessário
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
